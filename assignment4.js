@@ -53,8 +53,8 @@ window.onload = function init() {
 
 
     coneVertices = [
-        vec3(-0.14, -0.23, -0.1),
-        vec3(0.14, -0.23, -0.1),
+        vec3(-0.14, -0.35, -0.1),
+        vec3(0.14, -0.35, -0.1),
         vec3(0, 0.2, -0.1),
 
     ];
@@ -188,7 +188,7 @@ function render() {
 
     // Draw Cone
     let transformationMatrix = mat4();
-    transformationMatrix = mult(transformationMatrix, translate(translateX, translateY - .77, translateZ));
+    transformationMatrix = mult(transformationMatrix, translate(translateX, translateY - .65, translateZ));
     transformationMatrix = mult(transformationMatrix, rotateX(angleX));
     transformationMatrix = mult(transformationMatrix, rotateY(angleY));
     transformationMatrix = mult(transformationMatrix, rotateZ(angleZ));
@@ -214,7 +214,7 @@ function render() {
 function drawWing(baseMatrix, rotation, color) {
     let wingMatrix = mat4();
     wingMatrix = mult(wingMatrix, baseMatrix);
-    wingMatrix = mult(wingMatrix, translate(0, 0.2, 0));
+    wingMatrix = mult(wingMatrix, translate(0, 0.1, 0));
     wingMatrix = mult(wingMatrix, rotateZ(rotation));
     wingMatrix = mult(wingMatrix, translate(0, -0.2, 0));
 
