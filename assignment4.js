@@ -51,26 +51,56 @@ window.onload = function init() {
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
+    let p1 = vec3(-0.14, -0.35, -0.1);
+    let p2 = vec3(0.14, -0.35, -0.1);
+    let apex = vec3(0, 0.2, -0.1);
 
-    coneVertices = [
-        vec3(-0.14, -0.35, -0.1),
-        vec3(0.14, -0.35, -0.1),
-        vec3(0, 0.2, -0.1),
+    let baseCenter = vec3(
+        (p1[0] + p2[0]) / 2,
+        (p1[1] + p2[1]) / 2,
+        (p1[2] + p2[2]) / 2
+    );
 
-    ];
+    let dx = p2[0] - p1[0];
+    let dy = p2[1] - p1[1];
+    let dz = p2[2] - p1[2];
+    let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+    let r = distance / 2;
+
+
+    let n = 30; 
+    let circleVertices = [];
+
+    for (let i = 0; i < n; i++) {
+        let angle = (2 * Math.PI * i) / n;
+        // Taban dairesi xz düzleminde dönsün, ancak baseCenter konumunda olacak
+        let x = baseCenter[0] + r * Math.cos(angle);
+        let y = baseCenter[1];
+        let z = baseCenter[2] + r * Math.sin(angle);
+        circleVertices.push(vec3(x, y, z));
+    }
+
+    coneVertices = [];
+    for (let i = 0; i < n; i++) {
+        let next = (i + 1) % n;
+        coneVertices.push(apex);
+        coneVertices.push(circleVertices[i]);
+        coneVertices.push(circleVertices[next]);
+    }
+
 
     rectVertices = [
         vec3(-0.04, 0.2, 0),
         vec3(0.04, 0.2, 0),
         vec3(-0.04, 0.45, 0),
-        vec3(0.04, 0.45, 0)
+        vec3(0.04, 0.45, 0),
     ];
 
     squareVertices = [
         vec3(-1, -1, -1),
         vec3(1, -1, -1),
         vec3(1, -1, 1),
-        vec3(-1, -1, 1)
+        vec3(-1, -1, 1),
     ];
 
     bufferCone = gl.createBuffer();
@@ -181,7 +211,7 @@ function render() {
     // Draw Square
     let squareMatrix = mat4();
     gl.uniformMatrix4fv(modelMatrixLoc, false, flatten(squareMatrix));
-    gl.uniform4fv(colorLoc, vec4(0.5, 0.5, 0.5, 1.0));
+    gl.uniform4fv(colorLoc, vec4(0.4, 0.4, 0.8, 1.0));
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferSquare);
     gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
@@ -198,14 +228,24 @@ function render() {
     gl.uniform4fv(colorLoc, vec4(coneRed, coneGreen, coneBlue, 1.0));
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferCone);
     gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);  // Düzeltme: 3 vertex için
+    gl.drawArrays(gl.TRIANGLES, 0, coneVertices.length); // Düzeltme: 3 vertex için
 
     // Draw Rectangular Wings
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferRect);
     gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
 
-    const wingColors = [vec4(1, 0, 0, 1.0), vec4(0, 1, 0, 1.0), vec4(0, 0, 1, 1.0)];
-    const wingRotations = [currentRotation, currentRotation + 120, currentRotation + 240];
+    const wingColors = [
+        vec4(1, 0, 0, 1.0),
+        vec4(0, 1, 0, 1.0),
+        vec4(0, 0, 1, 1.0),
+    ];
+
+    const wingRotations = [
+        currentRotation,
+        currentRotation + 120,
+        currentRotation + 240,
+    ];
+
     for (let i = 0; i < 3; i++) {
         drawWing(transformationMatrix, wingRotations[i], wingColors[i]);
     }
@@ -230,4 +270,3 @@ function animate() {
     render();
     requestAnimFrame(animate);
 }
-
