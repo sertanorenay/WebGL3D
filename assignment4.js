@@ -68,7 +68,7 @@ window.onload = function init() {
     let r = distance / 2;
 
 
-    let n = 30; 
+    let n = 90; 
     let circleVertices = [];
 
     for (let i = 0; i < n; i++) {
@@ -228,7 +228,19 @@ function render() {
     gl.uniform4fv(colorLoc, vec4(coneRed, coneGreen, coneBlue, 1.0));
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferCone);
     gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
-    gl.drawArrays(gl.TRIANGLES, 0, coneVertices.length); // Düzeltme: 3 vertex için
+    gl.drawArrays(gl.TRIANGLES, 0, coneVertices.length);
+
+    // Draw Little Cone
+    let smallConeMatrix = mat4();
+    smallConeMatrix = mult(transformationMatrix, translate(0, 0.2, -0.1));
+    smallConeMatrix = mult(transformationMatrix, translate(0, 0.08, 0));
+    smallConeMatrix = mult(smallConeMatrix, rotateX(90));
+    smallConeMatrix = mult(smallConeMatrix, scalem(0.1, 0.25, 0.25));
+
+    gl.uniformMatrix4fv(modelMatrixLoc, false, flatten(smallConeMatrix));
+    gl.bindBuffer(gl.ARRAY_BUFFER, bufferCone);
+    gl.vertexAttribPointer(vPosition, 3, gl.FLOAT, false, 0, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, coneVertices.length);
 
     // Draw Rectangular Wings
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferRect);
