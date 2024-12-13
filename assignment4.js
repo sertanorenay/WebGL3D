@@ -73,7 +73,6 @@ window.onload = function init() {
 
     for (let i = 0; i < n; i++) {
         let angle = (2 * Math.PI * i) / n;
-        // Taban dairesi xz düzleminde dönsün, ancak baseCenter konumunda olacak
         let x = baseCenter[0] + r * Math.cos(angle);
         let y = baseCenter[1];
         let z = baseCenter[2] + r * Math.sin(angle);
@@ -87,7 +86,6 @@ window.onload = function init() {
         coneVertices.push(circleVertices[i]);
         coneVertices.push(circleVertices[next]);
     }
-
 
     rectVertices = [
         vec3(-0.04, 0.2, 0),
@@ -218,7 +216,7 @@ function render() {
 
     // Draw Cone
     let transformationMatrix = mat4();
-    transformationMatrix = mult(transformationMatrix, translate(translateX, translateY - .65, translateZ));
+    transformationMatrix = mult(transformationMatrix, translate(translateX, translateY - 0.65, translateZ));
     transformationMatrix = mult(transformationMatrix, rotateX(angleX));
     transformationMatrix = mult(transformationMatrix, rotateY(angleY));
     transformationMatrix = mult(transformationMatrix, rotateZ(angleZ));
