@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>Assignment 4</title>
+<link rel="icon" href="https://cdn3.iconfinder.com/data/icons/iconpark-vol-1/48/cube-three-512.png" type="image/png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Annapurna+SIL:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Pacifico&family=Playwrite+BE+VLG:wght@100..400&display=swap">
+<title>Windmill in WebGL</title>
 
 <script id="vertex-shader" type="x-shader/x-vertex">
 	attribute vec4 vPosition;
@@ -17,49 +19,42 @@
 	
 
 <script id="fragment-shader" type="x-shader/x-fragment">
+	precision mediump float;
+	uniform vec4 color;
 
-precision mediump float;
-uniform vec4 color;
-
-void
-main()
-{
-    gl_FragColor = color;
-}
+	void main() {
+    	gl_FragColor = color;
+	}
 </script>
 
 <script type="text/javascript" src="Common/webgl-utils.js"></script>
 <script type="text/javascript" src="Common/initShaders.js"></script>
 <script type="text/javascript" src="Common/MV.js"></script>
-<script type="text/javascript" src="assignment4.js"></script>
+<script type="text/javascript" src="main.js"></script>
 </head>
 
-<body style="background-color:powderblue;">
+<body style=" font-family: 'Outfit', sans-serif; display: flex; justify-content: center; align-items: center; height: 95vh; background-color:rgb(247, 166, 166); 
+-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
 
-<div>
-Sertan Örenay, 20050111044
-</div>
 <table>
 	<tr>
 		<td>
 		<canvas id="gl-canvas" width="512" height="512">
-			Oops ... your browser doesn't support the HTML5 canvas element
+			Oops ... your browser doesn't support the HTML5 canvas element.
 		</canvas>
 		</td><br>
-		<td>
-
-			<div> <strong>---- Camera Related ----</strong> </div>
+		<td style="text-align:center;">
 			
-    		<div>FOVY: 30<input id="fovy" type="range"
+			<div>Field of View Y</div>
+    		<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;30<input id="fovy" type="range"
     		 min="30" max="120" step="5" value="45" />120</div>
 		
-			
     		<div>Camera Position</div>
     		<div>X: -3<input id="cameraX" type="range"
     		 min="-3" max="3" step="0.5" value="0" />3</div>
     		<div>Y: -3<input id="cameraY" type="range"
     		 min="-3" max="3" step="0.5" value="0" />3</div>
-    		<div>Z: 1<input id="cameraZ" type="range"
+    		<div>&nbsp;Z: 1<input id="cameraZ" type="range"
     		 min="1" max="7" step="0.5" value="4" />7</div>
     
     		<div>Camera Target</div>
@@ -69,10 +64,6 @@ Sertan Örenay, 20050111044
     		 min="-3" max="3" step="0.5" value="0" />3</div>
     		<div>Z: -3<input id="targetZ" type="range"
     		 min="-3" max="3" step="0.5" value="0" />3</div>
-
-
-
-			<div> <strong>---- Transformations ----</strong> </div>
 			
 			<div>Position</div> 
 			<div>X: -2<input id="inp_objX" type="range"
@@ -83,7 +74,7 @@ Sertan Örenay, 20050111044
 			min="-2" max="2" step="0.05" value="0" />2</div>
 
 			<div>Scale</div> 
-			<div>0<input id="inp_obj_scale" type="range"
+			<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0<input id="inp_obj_scale" type="range"
 			 min="0" max="2" step="0.05" value="1" />2</div> 
 			
 			<div>Rotation</div>
@@ -101,24 +92,22 @@ Sertan Örenay, 20050111044
 				-180<input id="inp_obj_rotationZ" type="range" 
 				min="-180" max="180" step="5.0" value="0" />180
 			</div>
-
-
-
+			
 			<div>Speed</div> 
-			<div>-2<input id="inp_wing_speed" type="range"
+			<div>&nbsp;&nbsp;&nbsp;&nbsp;-2<input id="inp_wing_speed" type="range"
 			 min="-2" max="2" step="0.1" value="0.5" />2
 			</div> 
 			
-			<div> <strong>---- Color ----</strong> </div>
-			<div>
+			<div> Cone Color </div>
+			<div>&nbsp;
 			R: 0<input id="cone_red" type="range"
 			 min="0" max="1" step="0.05" value="0" />1
 			</div> 
-			<div>
+			<div>&nbsp;
 			G: 0<input id="cone_green" type="range"
 			 min="0" max="1" step="0.05" value="0" />1
 			</div> 
-			<div>
+			<div>&nbsp;
 			B: 0<input id="cone_blue" type="range"
 			 min="0" max="1" step="0.05" value="0" />1
 			</div>
